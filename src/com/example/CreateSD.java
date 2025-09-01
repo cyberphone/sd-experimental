@@ -53,6 +53,36 @@ public class CreateSD {
                "</div>";
     }
 
+    static CBORSimple SIMPLE_59 = new CBORSimple(59);
+    static final CBORArray DISCLOSURES = 
+    CBORDiagnosticNotation.convert("""
+            [ / these are all the disclosures /
+        [
+            /salt/   h'bae611067bb823486797da1ebbb52f83',
+            /value/  "ABCD-123456",
+            /claim/  501   / inspector_license_number /
+        ],
+        [
+            /salt/   h'8de86a012b3043ae6e4457b9e1aaab80',
+            /value/  1549560720   / inspected 7-Feb-2019 /
+        ],
+        [
+            /salt/   h'7af7084b50badeb57d49ea34627c7a52',
+            /value/  1612560720   / inspected 4-Feb-2021 /
+        ],
+        [
+            /salt/   h'ec615c3035d5a4ff2f5ae29ded683c8e',
+            /value/  "ca",
+            /claim/  "region"   / region=California /
+        ],
+        [
+            /salt/   h'37c23d4ec4db0806601e6b6dc6670df9',
+            /value/  "94188",
+            /claim/  "postal_code"
+        ]
+    ]
+            """).getArray();
+
     static void replace(String holder, String text) {
         int index = template.indexOf("@" + holder + "@");
         if (index <= 0) {
@@ -61,12 +91,17 @@ public class CreateSD {
         template.replace(index, index + holder.length() + 2, text);
     }
 
+    static CBORBytes claim(int index) {
+        byte[] disc = new CBORBytes(DISCLOSURES.get(index).encode()).encode();
+        return new CBORBytes(HashAlgorithms.SHA256.digest(disc));
+    }
+
     public static void main(String[] argc) {
         System.out.println(
    HexaDecimal.encode(HashAlgorithms.SHA256.digest(
             HexaDecimal.decode(
-                "82507AF7084B50BADEB57D49EA34627C7A521A601DB950"
-          //      "8350bae611067bb823486797da1ebbb52f836b414243442d3132333435361901f5"
+              //  "82507AF7084B50BADEB57D49EA34627C7A521A601DB950"
+                "581c8350ec615c3035d5a4ff2f5ae29ded683c8e62636166726567696f6e"
                 
                 ))));
  
@@ -105,13 +140,39 @@ public class CreateSD {
             }
         }
         for (CBORObject key : requestMap.getKeys()) {
-            result.set(key, new CBORString("Signed disclosure"));
+            CBORObject mapKey;
+            CBORObject mapValue;
+            switch (key.getInt32()) {
+                case 500 -> {
+                    mapKey = key;
+                    mapValue = new CBORBoolean(true);
+                }
+
+                case 501 -> {
+                    mapKey = SIMPLE_59;
+                    mapValue = new CBORArray().add(claim(0));
+                }
+
+                case 502 -> {
+                    mapKey = key;
+                    mapValue = new CBORMap().set(new CBORString("country"), new CBORString("us"))
+                        .set(SIMPLE_59,
+                    new CBORArray().add(claim(3)).add(claim(4)));
+                }
+  
+                case 503 -> {
+                    mapKey = key;
+                    mapValue = new CBORArray().add(new CBORBoolean(true));
+                }
+ 
+                default ->
+                    throw new RuntimeException("Switch");
+            };
+            result.set(mapKey, mapValue);
         }
-        CBORArray unprotectedDisclosures = new CBORArray();
-        for (int i = 0; i < 4; i++) {
-            unprotectedDisclosures.add(new CBORString("Unprotected disclosure"));
-        }
-        result.set(CBORCryptoConstants.CSF_UNPROTECTED_LBL, unprotectedDisclosures);
+  
+        result.set(CBORCryptoConstants.CSF_UNPROTECTED_LBL,
+                   DISCLOSURES);
         byte[] cbor = new CBORAsymKeySigner(
                 issuerPair.getPrivate(), 
                 AsymSignatureAlgorithms.getAlgorithmFromId(alg))
