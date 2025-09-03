@@ -14,26 +14,90 @@ as foundation but rather building on
 <a href='https://datatracker.ietf.org/doc/draft-ietf-cbor-cde/'>Deterministically Encoded CBOR</a> and
 <a href='https://cyberphone.github.io/javaapi/org/webpki/cbor/doc-files/signatures.html'>Embedded Signatures</a>.
 <h5>A CWT without Selective Disclosure</h5>
-<div class='webpkihexbox' style='display:block'>{<br>&nbsp;&nbsp;/&nbsp;iss&nbsp;/&nbsp;1&nbsp;&nbsp;:&nbsp;"https://issuer.example",<br>&nbsp;&nbsp;/&nbsp;sub&nbsp;/&nbsp;2&nbsp;&nbsp;:&nbsp;"https://device.example",<br>&nbsp;&nbsp;/&nbsp;exp&nbsp;/&nbsp;4&nbsp;&nbsp;:&nbsp;1725330600,&nbsp;/2024-09-02T19:30:00Z/<br>&nbsp;&nbsp;/&nbsp;nbf&nbsp;/&nbsp;5&nbsp;&nbsp;:&nbsp;1725243840,&nbsp;/2024-09-01T19:25:00Z/<br>&nbsp;&nbsp;/&nbsp;iat&nbsp;/&nbsp;6&nbsp;&nbsp;:&nbsp;1725244200,&nbsp;/2024-09-01T19:30:00Z/<br>&nbsp;&nbsp;/&nbsp;cnf&nbsp;/&nbsp;8&nbsp;&nbsp;:&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;cose&nbsp;key&nbsp;/&nbsp;1&nbsp;:&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;kty&nbsp;/&nbsp;&nbsp;1:&nbsp;2,&nbsp;&nbsp;/&nbsp;EC2&nbsp;&nbsp;&nbsp;/<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;crv&nbsp;/&nbsp;-1:&nbsp;1,&nbsp;&nbsp;/&nbsp;P-256&nbsp;/<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;x&nbsp;/&nbsp;&nbsp;&nbsp;-2:&nbsp;h'8554eb275dcd6fbd1c7ac641aa2c90d92022fd0d3024b5af18c7cc61ad527a2d',<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;y&nbsp;/&nbsp;&nbsp;&nbsp;-3:&nbsp;h'4dc7ae2c677e96d0cc82597655ce92d5503f54293d87875d1e79ce4770194343'<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;},<br>&nbsp;&nbsp;/&nbsp;most_recent_inspection_passed&nbsp;/<br>&nbsp;&nbsp;500:&nbsp;true,<br>&nbsp;&nbsp;/&nbsp;inspector_license_number&nbsp;/<br>&nbsp;&nbsp;501:&nbsp;"ABCD-123456",<br>&nbsp;&nbsp;/&nbsp;inspection_dates&nbsp;/<br>&nbsp;&nbsp;502&nbsp;:&nbsp;[<br>&nbsp;&nbsp;&nbsp;&nbsp;1549560720,&nbsp;&nbsp;&nbsp;/&nbsp;2019-02-07T17:32:00&nbsp;/<br>&nbsp;&nbsp;&nbsp;&nbsp;1612498440,&nbsp;&nbsp;&nbsp;/&nbsp;2021-02-04T20:14:00&nbsp;/<br>&nbsp;&nbsp;&nbsp;&nbsp;1674004740&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;2023-01-17T17:19:00&nbsp;/<br>&nbsp;&nbsp;],<br>&nbsp;&nbsp;/&nbsp;inspection_location&nbsp;/<br>&nbsp;&nbsp;503:&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;"country":&nbsp;"us",&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;United&nbsp;States&nbsp;/<br>&nbsp;&nbsp;&nbsp;&nbsp;"region":&nbsp;"ca",&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;California&nbsp;/<br>&nbsp;&nbsp;&nbsp;&nbsp;"postal_code":&nbsp;"94188"<br>&nbsp;&nbsp;}<br>}</div>
+<div class='webpkihexbox' style='display:block'>{<br>
+&nbsp;&nbsp;/&nbsp;iss&nbsp;/&nbsp;1&nbsp;&nbsp;:&nbsp;"https://issuer.example",<br>
+&nbsp;&nbsp;/&nbsp;sub&nbsp;/&nbsp;2&nbsp;&nbsp;:&nbsp;"https://device.example",<br>
+&nbsp;&nbsp;/&nbsp;exp&nbsp;/&nbsp;4&nbsp;&nbsp;:&nbsp;1725330600,&nbsp;/2024-09-02T19:30:00Z/<br>
+&nbsp;&nbsp;/&nbsp;nbf&nbsp;/&nbsp;5&nbsp;&nbsp;:&nbsp;1725243840,&nbsp;/2024-09-01T19:25:00Z/<br>
+&nbsp;&nbsp;/&nbsp;iat&nbsp;/&nbsp;6&nbsp;&nbsp;:&nbsp;1725244200,&nbsp;/2024-09-01T19:30:00Z/<br>
+&nbsp;&nbsp;/&nbsp;cnf&nbsp;/&nbsp;8&nbsp;&nbsp;:&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;cose&nbsp;key&nbsp;/&nbsp;1&nbsp;:&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;kty&nbsp;/&nbsp;&nbsp;1:&nbsp;2,&nbsp;&nbsp;/&nbsp;EC2&nbsp;&nbsp;&nbsp;/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;crv&nbsp;/&nbsp;-1:&nbsp;1,&nbsp;&nbsp;/&nbsp;P-256&nbsp;/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;x&nbsp;/&nbsp;&nbsp;&nbsp;-2:&nbsp;h'8554eb275dcd6fbd1c7ac641aa2c90d92022fd0d3024b5af18c7cc61ad527a2d',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;y&nbsp;/&nbsp;&nbsp;&nbsp;-3:&nbsp;h'4dc7ae2c677e96d0cc82597655ce92d5503f54293d87875d1e79ce4770194343'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;/&nbsp;most_recent_inspection_passed&nbsp;/<br>
+&nbsp;&nbsp;500:&nbsp;true,<br>
+&nbsp;&nbsp;/&nbsp;inspector_license_number&nbsp;/<br>
+&nbsp;&nbsp;501:&nbsp;"ABCD-123456",<br>
+&nbsp;&nbsp;/&nbsp;inspection_dates&nbsp;/<br>
+&nbsp;&nbsp;502&nbsp;:&nbsp;[<br>
+&nbsp;&nbsp;&nbsp;&nbsp;1549560720,&nbsp;&nbsp;&nbsp;/&nbsp;2019-02-07T17:32:00&nbsp;/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;1612498440,&nbsp;&nbsp;&nbsp;/&nbsp;2021-02-04T20:14:00&nbsp;/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;1674004740&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;2023-01-17T17:19:00&nbsp;/<br>
+&nbsp;&nbsp;],<br>
+&nbsp;&nbsp;/&nbsp;inspection_location&nbsp;/<br>
+&nbsp;&nbsp;503:&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"country":&nbsp;"us",&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;United&nbsp;States&nbsp;/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"region":&nbsp;"ca",&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;California&nbsp;/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"postal_code":&nbsp;"94188"<br>
+&nbsp;&nbsp;}<br>
+}</div>
 <h5 id='holder'>Holder gets a [sort of] "SD-CWT" from the Issuer</h5>
 Very humble beginnings...
-<div class='webpkihexbox' style='display:block'>1010(["https://example.com/sd-cbor",&nbsp;{<br>&nbsp;&nbsp;1:&nbsp;"https://issuer.example",<br>&nbsp;&nbsp;2:&nbsp;"https://device.example",<br>&nbsp;&nbsp;4:&nbsp;1725330600,<br>&nbsp;&nbsp;5:&nbsp;1725243840,<br>&nbsp;&nbsp;6:&nbsp;1725244200,<br>&nbsp;&nbsp;8:&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;2,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-1:&nbsp;1,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-2:&nbsp;h'8554eb275dcd6fbd1c7ac641aa2c90d92022fd0d3024b5af18c7cc61ad527a2d',<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-3:&nbsp;h'4dc7ae2c677e96d0cc82597655ce92d5503f54293d87875d1e79ce4770194343'<br>&nbsp;&nbsp;&nbsp;&nbsp;},<br>&nbsp;&nbsp;&nbsp;&nbsp;2:&nbsp;-16<br>&nbsp;&nbsp;},<br>&nbsp;&nbsp;500:&nbsp;true,<br>&nbsp;&nbsp;502:&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;"country":&nbsp;"us",<br>
+<div class='webpkihexbox' style='display:block'>1010(["https://example.com/sd-cbor",&nbsp;{<br>
+&nbsp;&nbsp;1:&nbsp;"https://issuer.example",<br>
+&nbsp;&nbsp;2:&nbsp;"https://device.example",<br>
+&nbsp;&nbsp;4:&nbsp;1725330600,<br>
+&nbsp;&nbsp;5:&nbsp;1725243840,<br>
+&nbsp;&nbsp;6:&nbsp;1725244200,<br>
+&nbsp;&nbsp;8:&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;2,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-1:&nbsp;1,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-2:&nbsp;h'8554eb275dcd6fbd1c7ac641aa2c90d92022fd0d3024b5af18c7cc61ad527a2d',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-3:&nbsp;h'4dc7ae2c677e96d0cc82597655ce92d5503f54293d87875d1e79ce4770194343'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;&nbsp;&nbsp;2:&nbsp;-16<br>
+&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;500:&nbsp;true,<br>
+&nbsp;&nbsp;502:&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"country":&nbsp;"us",<br>
 &nbsp;&nbsp;&nbsp;&nbsp;simple(59):&nbsp;[<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;h'0d4b8c6123f287a1698ff2db15764564a976fb742606e8fd00e2140656ba0df3',<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;h'c0b7747f960fc2e201c4d47c64fee141b78e3ab768ce941863dc8914e8f5815f'<br>
 &nbsp;&nbsp;&nbsp;&nbsp;]<br>
-&nbsp;&nbsp;},<br>&nbsp;&nbsp;503:&nbsp;[true],<br>&nbsp;&nbsp;simple(59):&nbsp;[<br>
+&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;503:&nbsp;[true],<br>
+&nbsp;&nbsp;simple(59):&nbsp;[<br>
 &nbsp;&nbsp;&nbsp;&nbsp;h'af375dc3fba1d082448642c00be7b2f7bb05c9d8fb61cfc230ddfdfb4616a693'<br>
-&nbsp;&nbsp;],<br>&nbsp;&nbsp;simple(99):&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;-51,<br>&nbsp;&nbsp;&nbsp;&nbsp;3:&nbsp;"https://issuer.example/cwk3.cbor",<br>&nbsp;&nbsp;&nbsp;&nbsp;6:&nbsp;h'47ba304e99199a6176702cbfc0947b511b821d978f22d47ab5b83ca2af0ba5ea437b64f4120f34ed4b30d063874f017a16a8e1fb67e34a5fc275183a087acfe2279386c2d6efaa7c02154106dbf32ed1671d67d2022c698de61cced7017f63de'<br>&nbsp;&nbsp;},<br>&nbsp;&nbsp;simple(100):&nbsp;[<br>
+&nbsp;&nbsp;],<br>
+&nbsp;&nbsp;simple(99):&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;-51,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;3:&nbsp;"https://issuer.example/cwk3.cbor",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;6:&nbsp;h'47ba304e99199a6176702cbfc0947b511b821d978f22d47ab5b83ca2af0ba5ea437b64f4120f34ed4b30d063874f017a16a8e1fb67e34a5fc275183a087acfe2279386c2d6efaa7c02154106dbf32ed1671d67d2022c698de61cced7017f63de'<br>
+&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;simple(100):&nbsp;[<br>
 &nbsp;&nbsp;&nbsp;&nbsp;[h'bae611067bb823486797da1ebbb52f83',&nbsp;"ABCD-123456",&nbsp;501],<br>
 &nbsp;&nbsp;&nbsp;&nbsp;[h'8de86a012b3043ae6e4457b9e1aaab80',&nbsp;1549560720],<br>
 &nbsp;&nbsp;&nbsp;&nbsp;[h'7af7084b50badeb57d49ea34627c7a52',&nbsp;1612560720],<br>
 &nbsp;&nbsp;&nbsp;&nbsp;[h'ec615c3035d5a4ff2f5ae29ded683c8e',&nbsp;"ca",&nbsp;"region"],<br>
 &nbsp;&nbsp;&nbsp;&nbsp;[h'37c23d4ec4db0806601e6b6dc6670df9',&nbsp;"94188",&nbsp;"postal_code"]<br>
-&nbsp;&nbsp;]<br>}])</div>
+&nbsp;&nbsp;]<br>
+}])</div>
 <h5>Issuer Key</h5>
 Issuer COSE key pair in Extended Diagnostic Notation (EDN).
-<div class='webpkihexbox' style='display:block'>{<br>&nbsp;&nbsp;/kty/&nbsp;&nbsp;1&nbsp;:&nbsp;2,&nbsp;/EC/<br>&nbsp;&nbsp;/kid/&nbsp;&nbsp;2&nbsp;:&nbsp;"https://issuer.example/cwk3.cbor",<br>&nbsp;&nbsp;/alg/&nbsp;&nbsp;3&nbsp;:&nbsp;-51,&nbsp;/ESP384/<br>&nbsp;&nbsp;/crv/&nbsp;-1&nbsp;:&nbsp;2,&nbsp;/P-384/<br>&nbsp;&nbsp;/x/&nbsp;&nbsp;&nbsp;-2&nbsp;:&nbsp;h'c31798b0c7885fa3528fbf877e5b4c3a6dc67a5a5dc6b307b728c3725926f2abe5fb4964cd91e3948a5493f6ebb6cbbf',<br>&nbsp;&nbsp;/y/&nbsp;&nbsp;&nbsp;-3&nbsp;:&nbsp;h'8f6c7ec761691cad374c4daa9387453f18058ece58eb0a8e84a055a31fb7f9214b27509522c159e764f8711e11609554',<br>&nbsp;&nbsp;/d/&nbsp;&nbsp;&nbsp;-4&nbsp;:&nbsp;h'71c54d2221937ea612db1221f0d3ddf771c9381c4e3be41d5aa0a89d685f09cfef74c4bbf104783fd57e87ab227d074c'<br>}</div>
+<div class='webpkihexbox' style='display:block'>{<br>
+&nbsp;&nbsp;/kty/&nbsp;&nbsp;1&nbsp;:&nbsp;2,&nbsp;/EC/<br>
+&nbsp;&nbsp;/kid/&nbsp;&nbsp;2&nbsp;:&nbsp;"https://issuer.example/cwk3.cbor",<br>
+&nbsp;&nbsp;/alg/&nbsp;&nbsp;3&nbsp;:&nbsp;-51,&nbsp;/ESP384/<br>
+&nbsp;&nbsp;/crv/&nbsp;-1&nbsp;:&nbsp;2,&nbsp;/P-384/<br>
+&nbsp;&nbsp;/x/&nbsp;&nbsp;&nbsp;-2&nbsp;:&nbsp;h'c31798b0c7885fa3528fbf877e5b4c3a6dc67a5a5dc6b307b728c3725926f2abe5fb4964cd91e3948a5493f6ebb6cbbf',<br>
+&nbsp;&nbsp;/y/&nbsp;&nbsp;&nbsp;-3&nbsp;:&nbsp;h'8f6c7ec761691cad374c4daa9387453f18058ece58eb0a8e84a055a31fb7f9214b27509522c159e764f8711e11609554',<br>
+&nbsp;&nbsp;/d/&nbsp;&nbsp;&nbsp;-4&nbsp;:&nbsp;h'71c54d2221937ea612db1221f0d3ddf771c9381c4e3be41d5aa0a89d685f09cfef74c4bbf104783fd57e87ab227d074c'<br>
+}</div>
 </body>
 </html>
 
