@@ -3,10 +3,12 @@ package com.example;
 import java.io.File;
 
 import java.security.KeyPair;
+import java.security.PublicKey;
 
 import org.webpki.cbor.*;
 
 import org.webpki.crypto.AsymSignatureAlgorithms;
+import org.webpki.crypto.CryptoException;
 import org.webpki.crypto.HashAlgorithms;
 
 import org.webpki.util.IO;
@@ -76,8 +78,6 @@ public class CreateSD {
         modified.getTag().getCOTXObject()
             .object.getMap().get(CBORCryptoConstants.CSF_CONTAINER_LBL)
                 .getMap().remove(CBORCryptoConstants.CSF_SIGNATURE_LBL);
-
-    //    System.out.println(modified.toString());
         return modified;
     }
 
@@ -145,15 +145,47 @@ public class CreateSD {
                   .add(claim(disclosures.get(0))));
 
         CBORMap temp = decodeAndPrintFile("issuer-key").getMap();
-        CBORObject kid = temp.remove(new CBORInt(2));
+        CBORObject keyId = temp.remove(new CBORInt(2));
         int alg = temp.remove(new CBORInt(3)).getInt32();
-        KeyPair issuerPair = CBORKeyPair.convert(temp);
+        KeyPair issuerKeyPair = CBORKeyPair.convert(temp);
         byte[] cbor = syncEmbeddedSignature(new CBORAsymKeySigner(
-                issuerPair.getPrivate(), 
+                issuerKeyPair.getPrivate(), 
                 AsymSignatureAlgorithms.getAlgorithmFromId(alg))
-            .setKeyId(kid)
+            .setKeyId(keyId)
             .sign(new CBORTag(OBJECT_ID, result)), "current-issuer-signature.dn");
+
         replace("issued-sd-cwt", createBox(CBORDecoder.decode(cbor).toString()));
+
+        // Just for fun - verify the signature
+        new CBORAsymKeyValidator(new CBORAsymKeyValidator.KeyLocator() {
+
+                @Override
+                public PublicKey locate(PublicKey optionalPublicKey, 
+                                        CBORObject optionalKeyId,
+                                        AsymSignatureAlgorithms signatureAlgorithm) {
+                    if (optionalPublicKey != null || 
+                        optionalKeyId == null ||
+                        !keyId.equals(optionalKeyId) ||
+                        signatureAlgorithm != AsymSignatureAlgorithms.ECDSA_SHA384) {
+                        throw new CryptoException("Non-conforming signature container");
+                    }
+                    return issuerKeyPair.getPublic();
+                }
+                
+            })
+            .setTagPolicy(CBORCryptoUtils.POLICY.MANDATORY, new CBORCryptoUtils.Collector() {
+
+                @Override
+                public void foundData(CBORObject object) {
+                    String objectId = object.getTag().getCOTXObject().objectId;
+                    if (!objectId.equals(OBJECT_ID)) {
+                        throw new RuntimeException("Unexpected objectID: " + objectId);
+                    }
+                }
+                
+            })
+            .setUnprotectedDataPolicy(CBORCryptoUtils.POLICY.MANDATORY)
+            .validate(CBORDecoder.decode(cbor));
 
         temp = decodeAndPrintFile("holder-key").getMap();
        // temp.remove()
