@@ -1,0 +1,44 @@
+1010(["https://example.com/sd-cbor", {
+  1: "https://issuer.example",
+  2: "https://device.example",
+  4: 1725330600,
+  5: 1725243900,
+  6: 1725244200,
+  8: {
+    1: {
+      1: 2,
+      -1: 1,
+      -2: h'8554eb275dcd6fbd1c7ac641aa2c90d92022fd0d3024b5af18c7cc61ad527a2d',
+      -3: h'4dc7ae2c677e96d0cc82597655ce92d5503f54293d87875d1e79ce4770194343'
+    },
+    2: -16
+  },
+  500: true,
+  502: [
+    60(h'1b7fc8ecf4b1290712497d226c04b503b4aa126c603c83b75d2679c3c613f3fd'),
+    60(h'64afccd3ad52da405329ad935de1fb36814ec48fdfd79e3a108ef858e291e146'),
+    1674004740
+  ],
+  503: {
+    "country": "us",
+    simple(59): [
+      h'0d4b8c6123f287a1698ff2db15764564a976fb742606e8fd00e2140656ba0df3',
+      h'c0b7747f960fc2e201c4d47c64fee141b78e3ab768ce941863dc8914e8f5815f'
+    ]
+  },
+  simple(59): [
+    h'af375dc3fba1d082448642c00be7b2f7bb05c9d8fb61cfc230ddfdfb4616a693'
+  ],
+  simple(99): {
+    1: -51,
+    3: "https://issuer.example/cwk3.cbor",
+    6: h'0e548ab12b09bd07b41b1fce5364f7b2f4ee36f33da84e96304edac37378b1a16d4b1977e07b375997c29308789abcec6809aac94017b2c58378491d207fd33c6197645af86c89f2f4edd9ae76fca7583b6953408531a2844364c73d4939436e'
+  },
+  simple(100): [
+    [h'bae611067bb823486797da1ebbb52f83', "ABCD-123456", 501],
+    [h'8de86a012b3043ae6e4457b9e1aaab80', 1549560720],
+    [h'7af7084b50badeb57d49ea34627c7a52', 1612560720],
+    [h'ec615c3035d5a4ff2f5ae29ded683c8e', "ca", "region"],
+    [h'37c23d4ec4db0806601e6b6dc6670df9', "94188", "postal_code"]
+  ]
+}])

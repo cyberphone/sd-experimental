@@ -1,0 +1,8 @@
+{
+  /kty/  1 : 2,     # EC2
+  /alg/  3 : -9,    # ESP256
+  /crv/ -1 : 1,     # P-256
+  /x/   -2 : h'8554eb275dcd6fbd1c7ac641aa2c90d92022fd0d3024b5af18c7cc61ad527a2d',
+  /y/   -3 : h'4dc7ae2c677e96d0cc82597655ce92d5503f54293d87875d1e79ce4770194343',
+  /d/   -4 : h'5759a86e59bb3b002dde467da4b52f3d06e6c2cd439456cf0485b9b864294ce5'
+}

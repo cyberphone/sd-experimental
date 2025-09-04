@@ -13,14 +13,41 @@ This is a set of "printouts" from a PoC using SD-CWT
 as foundation but rather building on
 <a href='https://datatracker.ietf.org/doc/draft-ietf-cbor-cde/'>Deterministically Encoded CBOR</a> and
 <a href='https://cyberphone.github.io/javaapi/org/webpki/cbor/doc-files/signatures.html'>Embedded Signatures</a>.
-<h5>A CWT without Selective Disclosure</h5>
-@input@
-<h5 id='holder'>Holder gets a [sort of] "SD-CWT" from the Issuer</h5>
-Very humble beginnings...
-@sd@
-<h5>Issuer Key</h5>
-Issuer COSE key pair in Extended Diagnostic Notation (EDN).
-@ikey@
+<p>
+This PoC is based on the IETF draft
+<a href='https://www.ietf.org/archive/id/draft-ietf-spice-sd-cwt-04.html'>https://www.ietf.org/archive/id/draft-ietf-spice-sd-cwt-04.html</a>.
+</p>
+Note: this is NOT a standards proposal! 
+<h5>Disclosures</h5>
+Note: although the input data and salts are identical to those in the
+IETF draft, the resulting blinded claims differ.
+This is because there is no obvious need to wrap claims in <code>bstr</code>
+when you have deterministic encoding.
+@disclosures@
+<h5 id='issued-sd-cwt'>Enhanced "SD-CWT" Using An Embedded Signature</h5>
+Note: there is no "<code>typ</code>" entry.  This is because
+embedded signatures span over the <i>entire</i> container, and therefore
+make a top-level CBOR embedding tag a more logical place for object IDs.
+Unlike the CWT solution, this way of typing CBOR objects is <i>universal</i>.
+<p>
+The following is a verifiable and authentic <code>toString()</code> printout of
+the enhanced SD-CWT object:
+</p> 
+@issued-sd-cwt@
+The elimination of <code>bstr</code> for holding application data
+makes the document maintain a look close to a publishing format.
+<p>
+The following is a <code>toString()</code> printout of the original (I-D) CWT:
+</p>
+@original-pretty-print@
+<h5 id='issuer-key'>Issuer Key</h5>
+Issuer COSE Key in Extended Diagnostic Notation (EDN).
+@issuer-key@
+<h5 id='holder-key'>Holder Key</h5>
+Holder COSE Key in Extended Diagnostic Notation (EDN).
+@holder-key@
+<h5 id='original-ietf-sd-cwt'>The Original (IETF) SD-CWT</h5>
+@original-ietf-sd-cwt@
 </body>
 </html>
 

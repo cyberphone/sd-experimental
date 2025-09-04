@@ -1,8 +1,8 @@
 {
-  /kty/  1 : 2, /EC/
+  /kty/  1 : 2,     # EC2
   /kid/  2 : "https://issuer.example/cwk3.cbor",
-  /alg/  3 : -51, /ESP384/
-  /crv/ -1 : 2, /P-384/
+  /alg/  3 : -51,   # ESP384
+  /crv/ -1 : 2,     # P-384
   /x/   -2 : h'c31798b0c7885fa3528fbf877e5b4c3a6dc67a5a5dc6b307b728c3725926f2abe5fb4964cd91e3948a5493f6ebb6cbbf',
   /y/   -3 : h'8f6c7ec761691cad374c4daa9387453f18058ece58eb0a8e84a055a31fb7f9214b27509522c159e764f8711e11609554',
   /d/   -4 : h'71c54d2221937ea612db1221f0d3ddf771c9381c4e3be41d5aa0a89d685f09cfef74c4bbf104783fd57e87ab227d074c'
