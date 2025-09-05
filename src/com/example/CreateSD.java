@@ -4,6 +4,7 @@ import java.io.File;
 
 import java.security.KeyPair;
 import java.security.PublicKey;
+import java.util.HashMap;
 
 import org.webpki.cbor.*;
 
@@ -23,6 +24,8 @@ public class CreateSD {
     static String baseDirectory;
 
     static CBORMap result = new CBORMap();
+    static HashMap<CBORObject, Boolean> entries = new HashMap<>();
+
     static CBORInt CNF_MAIN_LBL = new CBORInt(8);
     static CBORInt CNF_ALG_LBL = new CBORInt(2);
     static CBORSimple SIMPLE_59 = new CBORSimple(59);
@@ -63,8 +66,7 @@ public class CreateSD {
     }
 
     static CBORBytes claim(CBORObject disclosure) {
-        byte[] disc = new CBORBytes(disclosure.encode()).encode();
-        return new CBORBytes(HashAlgorithms.SHA256.digest(disc));
+        return new CBORBytes(HashAlgorithms.SHA256.digest(disclosure.encode()));
     }
 
     static CBORObject decodeAndPrintFile(String baseName) {
@@ -98,6 +100,18 @@ public class CreateSD {
             writeString(refFile, signature.toString());
         }
         return signature.encode();
+    }
+
+    static void addBlinded(CBORObject disclosure) {
+        if (entries.put(disclosure, false) != null) {
+            throw new RuntimeException("Duplicate: " + disclosure);
+        }
+    }
+
+    static void fetch59(CBORObject disclosures) {
+        for (CBORObject element : disclosures.getArray().toArray()) {
+            addBlinded(element);
+        }
     }
 
     public static void main(String[] argc) {
@@ -157,15 +171,22 @@ public class CreateSD {
         replace("issued-sd-cwt", createBox(CBORDecoder.decode(cbor).toString()));
 
         // Just for fun - verify the signature
+        CBORObject decoded = CBORDecoder.decode(cbor);
+
+        // Enforce strict policies!
         new CBORAsymKeyValidator(new CBORAsymKeyValidator.KeyLocator() {
 
                 @Override
                 public PublicKey locate(PublicKey optionalPublicKey, 
                                         CBORObject optionalKeyId,
                                         AsymSignatureAlgorithms signatureAlgorithm) {
+                        // No inline public key
                     if (optionalPublicKey != null || 
+                        // Must have a keyId
                         optionalKeyId == null ||
+                        // That verify the keyId
                         !keyId.equals(optionalKeyId) ||
+                        // Verify algorithm
                         signatureAlgorithm != AsymSignatureAlgorithms.ECDSA_SHA384) {
                         throw new CryptoException("Non-conforming signature container");
                     }
@@ -173,6 +194,7 @@ public class CreateSD {
                 }
                 
             })
+            // Must hava a COTX tag with a specfic ID
             .setTagPolicy(CBORCryptoUtils.POLICY.MANDATORY, new CBORCryptoUtils.Collector() {
 
                 @Override
@@ -184,8 +206,57 @@ public class CreateSD {
                 }
                 
             })
+            // Permit unprotected elements
             .setUnprotectedDataPolicy(CBORCryptoUtils.POLICY.MANDATORY)
-            .validate(CBORDecoder.decode(cbor));
+            .validate(decoded);
+
+        // Now ckeck the disclosures!
+
+        // Collect the signed blinded claims
+        CBORMap globalMap = decoded.getTag().getCOTXObject().object.getMap();
+        for (CBORObject entry : globalMap.getKeys()) {
+            if (entry instanceof CBORInt i32 && i32.getInt32() > 8) {
+                CBORObject object = globalMap.get(entry);
+                if (object instanceof CBORArray arr) {
+                    for (CBORObject o : arr.toArray()) {
+                        if (o instanceof CBORTag tag && tag.getTagNumber() == 60) {
+                            addBlinded(tag.get());
+                        }
+                    }
+                } else if (object instanceof CBORMap map) {
+                    for (CBORObject key : map.getKeys()) {
+                        if (key.equals(SIMPLE_59)) {
+                            fetch59(map.get(key));
+                            // Uncomment for testing.
+//                            addBlinded(new CBORString("nonsense"));
+                        }
+                    }
+                }
+                continue;
+            }
+            if (entry.equals(SIMPLE_59)) {
+                // Coomment away for testing.
+                fetch59(globalMap.get(entry));
+            }
+        }
+        // Uncomment next line for testing.
+//        globalMap.get(CBORCryptoConstants.CSF_UNPROTECTED_LBL).getArray().add(new CBORString("no such claim"));
+        // Fetch the clear text disclosures and verify thair signed and blinded counterpart
+        for (CBORObject element : 
+                globalMap.get(CBORCryptoConstants.CSF_UNPROTECTED_LBL).getArray().toArray()) {
+            CBORBytes disclosure = claim(element);
+            if (entries.get(disclosure) == null) {
+                throw new RuntimeException("missing signed disclosure for: " + element.toString());
+            }
+            entries.put(disclosure, true);
+        }
+        // Are there signed disclosures missing their clear text counterpart?
+        for (CBORObject key : entries.keySet()) {
+            if (!entries.get(key)) {
+                throw new RuntimeException("missing unsigned disclosure for: " + key.toString());
+            }
+        }
+        // We did it!
 
         temp = decodeAndPrintFile("holder-key").getMap();
        // temp.remove()

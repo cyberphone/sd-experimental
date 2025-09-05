@@ -8,6 +8,7 @@
 <link rel='stylesheet' type='text/css' href='style.css'>
 </head>
 <body>
+<a href='https://github.com/cyberphone/sd-experimental/tree/main' title="Back to Repository"><img style='height:2.5em' src='thelab.svg'></a>
 <h2>Selective Disclosure - Experiments</h2>
 This is a set of "printouts" from a PoC using SD-CWT
 as foundation but rather building on
@@ -71,24 +72,24 @@ the enhanced SD-CWT object:
 &nbsp;&nbsp;},<br>
 &nbsp;&nbsp;500:&nbsp;true,<br>
 &nbsp;&nbsp;502:&nbsp;[<br>
-&nbsp;&nbsp;&nbsp;&nbsp;60(h'1b7fc8ecf4b1290712497d226c04b503b4aa126c603c83b75d2679c3c613f3fd'),<br>
-&nbsp;&nbsp;&nbsp;&nbsp;60(h'64afccd3ad52da405329ad935de1fb36814ec48fdfd79e3a108ef858e291e146'),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;60(h'3e2fcbd972ed38c068af06771916cd89871d96c327e5c2eee99476e313b6d632'),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;60(h'c3cb1cc05eeb7b2abd5f4c2febdedab35d5dee5e358c4c5956ebe808fdb58370'),<br>
 &nbsp;&nbsp;&nbsp;&nbsp;1674004740<br>
 &nbsp;&nbsp;],<br>
 &nbsp;&nbsp;503:&nbsp;{<br>
 &nbsp;&nbsp;&nbsp;&nbsp;"country":&nbsp;"us",<br>
 &nbsp;&nbsp;&nbsp;&nbsp;simple(59):&nbsp;[<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;h'0d4b8c6123f287a1698ff2db15764564a976fb742606e8fd00e2140656ba0df3',<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;h'c0b7747f960fc2e201c4d47c64fee141b78e3ab768ce941863dc8914e8f5815f'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;h'3e66c2ae99733a76d0e55884fc92bb11b4abbcf8f84bbf9006bd09db570b0e32',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;h'e6f908ed313a889f3981e3d3fe84991e3d80f5f081b9f5b6e4666a0ac74cf8f5'<br>
 &nbsp;&nbsp;&nbsp;&nbsp;]<br>
 &nbsp;&nbsp;},<br>
 &nbsp;&nbsp;simple(59):&nbsp;[<br>
-&nbsp;&nbsp;&nbsp;&nbsp;h'af375dc3fba1d082448642c00be7b2f7bb05c9d8fb61cfc230ddfdfb4616a693'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;h'd9df03da474fcb3c65771748e2e0608cf437504ecc24f450aaeacd40dd552b3f'<br>
 &nbsp;&nbsp;],<br>
 &nbsp;&nbsp;simple(99):&nbsp;{<br>
 &nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;-51,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;3:&nbsp;"https://issuer.example/cwk3.cbor",<br>
-&nbsp;&nbsp;&nbsp;&nbsp;6:&nbsp;h'0e548ab12b09bd07b41b1fce5364f7b2f4ee36f33da84e96304edac37378b1a16d4b1977e07b375997c29308789abcec6809aac94017b2c58378491d207fd33c6197645af86c89f2f4edd9ae76fca7583b6953408531a2844364c73d4939436e'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;6:&nbsp;h'f0ef26818616bba0d7a5a8a2c34551caf03aab21fdd2123b7541674ce91e668c3d62e22a9e53fac0a258b00659c4f4c970cb2f9ff06ea43eeb72c0f4c517e685142b1aff3b06ff8e91da64bb3a4a81013f0eb70a7d636b2baa844de6c5972460'<br>
 &nbsp;&nbsp;},<br>
 &nbsp;&nbsp;simple(100):&nbsp;[<br>
 &nbsp;&nbsp;&nbsp;&nbsp;[h'bae611067bb823486797da1ebbb52f83',&nbsp;"ABCD-123456",&nbsp;501],<br>
@@ -100,8 +101,8 @@ the enhanced SD-CWT object:
 }])</div>
 The elimination of <code>bstr</code> for holding application data
 makes documents maintain an appearance that is close to the publishing format.
-<p>
-The following is a <code>toString()</code> printout of the <i>original</i> (I-D) CWT:
+<p id='#sd-cwt-debug-printout'>
+The following is a <code>toString()</code> printout of the <i>original</i> (IETF) SD-CWT:
 </p>
 <div class='webpkihexbox' style='display:block'>18([<br>
 &nbsp;&nbsp;h'a401382204582068747470733a2f2f6973737565722e6578616d706c652f636f73652d6b65793310726170706c69636174696f6e2f73642d637774122f',<br>
@@ -117,13 +118,9 @@ The following is a <code>toString()</code> printout of the <i>original</i> (I-D)
 &nbsp;&nbsp;h'aa017668747470733a2f2f6973737565722e6578616d706c65027668747470733a2f2f6465766963652e6578616d706c65041a66d674a8051a66d521fc061a66d5232808a101a4010220012158208554eb275dcd6fbd1c7ac641aa2c90d92022fd0d3024b5af18c7cc61ad527a2d2258204dc7ae2c677e96d0cc82597655ce92d5503f54293d87875d1e79ce47701943431901f4f51901f683d83c58201b7fc8ecf4b1290712497d226c04b503b4aa126c603c83b75d2679c3c613f3fdd83c582064afccd3ad52da405329ad935de1fb36814ec48fdfd79e3a108ef858e291e1461a63c749041901f7a267636f756e747279627573f83b8258200d4b8c6123f287a1698ff2db15764564a976fb742606e8fd00e2140656ba0df35820c0b7747f960fc2e201c4d47c64fee141b78e3ab768ce941863dc8914e8f5815ff83b815820af375dc3fba1d082448642c00be7b2f7bb05c9d8fb61cfc230ddfdfb4616a693',<br>
 &nbsp;&nbsp;h'9c9022e57adb33c853f30b6e8a590f406ca55849d7b8cd2a2519d3aec03e61b9ef0ecd85fe96103f916f58d73cd2f7754c390401945f0683b144d3504e500f94d30433c3445417dc3c920f7a155548e91994601827d0a46ead66ff450485e85f'<br>
 ])</div>
-This document is obviously rather hard to "decipher" (and debug) compared to
+This object is obviously rather hard to "decipher" (and debug) compared to
 its <a href='#original-ietf-sd-cwt'>Authored Counterpart</a>,
-although they (technically) are <i>identical</i>.
-<p>
-As a reference, you may also take a peek at 
-<a href='https://www.ietf.org/archive/id/draft-ietf-oauth-selective-disclosure-jwt-22.html#section-5.1-30'>SD-JWT</a>.
-</p>
+although they are (with respect to CBOR), <i>identical</i>.
 <h5 id='issuer-key'>Issuer Key</h5>
 Issuer COSE Key in Extended Diagnostic Notation (EDN).
 <div class='webpkihexbox' style='display:block'>{<br>

@@ -8,6 +8,7 @@
 <link rel='stylesheet' type='text/css' href='style.css'>
 </head>
 <body>
+<a href='https://github.com/cyberphone/sd-experimental/tree/main' title="Back to Repository"><img style='height:2.5em' src='thelab.svg'></a>
 <h2>Selective Disclosure - Experiments</h2>
 This is a set of "printouts" from a PoC using SD-CWT
 as foundation but rather building on
@@ -36,17 +37,13 @@ the enhanced SD-CWT object:
 @issued-sd-cwt@
 The elimination of <code>bstr</code> for holding application data
 makes documents maintain an appearance that is close to the publishing format.
-<p>
-The following is a <code>toString()</code> printout of the <i>original</i> (I-D) CWT:
+<p id='#sd-cwt-debug-printout'>
+The following is a <code>toString()</code> printout of the <i>original</i> (IETF) SD-CWT:
 </p>
 @original-pretty-print@
-This document is obviously rather hard to "decipher" (and debug) compared to
+This object is obviously rather hard to "decipher" (and debug) compared to
 its <a href='#original-ietf-sd-cwt'>Authored Counterpart</a>,
-although they (technically) are <i>identical</i>.
-<p>
-As a reference, you may also take a peek at 
-<a href='https://www.ietf.org/archive/id/draft-ietf-oauth-selective-disclosure-jwt-22.html#section-5.1-30'>SD-JWT</a>.
-</p>
+although they are (with respect to CBOR), <i>identical</i>.
 <h5 id='issuer-key'>Issuer Key</h5>
 Issuer COSE Key in Extended Diagnostic Notation (EDN).
 @issuer-key@
