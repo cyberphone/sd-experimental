@@ -104,7 +104,7 @@ public class CreateSD {
 
     static void addBlinded(CBORObject disclosure) {
         if (entries.put(disclosure, false) != null) {
-            throw new RuntimeException("Duplicate: " + disclosure);
+            throw new RuntimeException("Duplicate disclosure: " + disclosure);
         }
     }
 
@@ -118,9 +118,10 @@ public class CreateSD {
         baseDirectory = argc[0];
         template.append(readString("template.html"));
 
+        CBORObject sdCwtOriginal = decodeAndPrintFile("original-ietf-sd-cwt");
+
         CBORMap originalSdPayload = 
-            CBORDecoder.decode(decodeAndPrintFile("original-ietf-sd-cwt")
-                .getTag().get().getArray().get(2).getBytes()).getMap();
+            CBORDecoder.decode(sdCwtOriginal.getTag().get().getArray().get(2).getBytes()).getMap();
         // Fetch original instance data and "cnf"
         for (CBORObject key : originalSdPayload.getKeys()) {
             if (key instanceof CBORInt keyinst && keyinst.getInt32() < 500) {
@@ -134,11 +135,9 @@ public class CreateSD {
  
         CBORArray disclosures = decodeAndPrintFile("disclosures").getArray();
     
-        replace("original-pretty-print", createBox(
-            CBORDiagnosticNotation.convert(
-                readString("original-pretty-print.dn")).toString()));
+        replace("original-pretty-print", createBox(sdCwtOriginal.toString()));
 
-        // The following seems a bit constructed but it faitfully
+        // The following seems a bit constructed but it faithfully
         // follows the original :)
 
         // The disclosures in clear.
@@ -158,19 +157,20 @@ public class CreateSD {
               .set(SIMPLE_59, new CBORArray()
                   .add(claim(disclosures.get(0))));
 
-        CBORMap temp = decodeAndPrintFile("issuer-key").getMap();
-        CBORObject keyId = temp.remove(new CBORInt(2));
-        int alg = temp.remove(new CBORInt(3)).getInt32();
-        KeyPair issuerKeyPair = CBORKeyPair.convert(temp);
+        CBORMap issuerKey = decodeAndPrintFile("issuer-key").getMap();
+        CBORObject keyId = issuerKey.remove(new CBORInt(2));
+        int alg = issuerKey.remove(new CBORInt(3)).getInt32();
+        KeyPair issuerKeyPair = CBORKeyPair.convert(issuerKey);
         byte[] cbor = syncEmbeddedSignature(new CBORAsymKeySigner(
                 issuerKeyPair.getPrivate(), 
                 AsymSignatureAlgorithms.getAlgorithmFromId(alg))
             .setKeyId(keyId)
             .sign(new CBORTag(OBJECT_ID, result)), "current-issuer-signature.dn");
 
+        // Raw, but rather pretty anyway
         replace("issued-sd-cwt", createBox(CBORDecoder.decode(cbor).toString()));
 
-        // Just for fun - verify the signature
+        // Just for "fun" - verify the signature
         CBORObject decoded = CBORDecoder.decode(cbor);
 
         // Enforce strict policies!
@@ -194,7 +194,7 @@ public class CreateSD {
                 }
                 
             })
-            // Must hava a COTX tag with a specfic ID
+            // Non-standard: must hava a COTX tag with a specfic ID
             .setTagPolicy(CBORCryptoUtils.POLICY.MANDATORY, new CBORCryptoUtils.Collector() {
 
                 @Override
@@ -206,7 +206,7 @@ public class CreateSD {
                 }
                 
             })
-            // Permit unprotected elements
+            // Non-standard: permit unprotected elements
             .setUnprotectedDataPolicy(CBORCryptoUtils.POLICY.MANDATORY)
             .validate(decoded);
 
@@ -246,20 +246,20 @@ public class CreateSD {
                 globalMap.get(CBORCryptoConstants.CSF_UNPROTECTED_LBL).getArray().toArray()) {
             CBORBytes disclosure = claim(element);
             if (entries.get(disclosure) == null) {
-                throw new RuntimeException("missing signed disclosure for: " + element.toString());
+                throw new RuntimeException("Missing signed disclosure for: " + element);
             }
             entries.put(disclosure, true);
         }
-        // Are there signed disclosures missing their clear text counterpart?
+        // Are there signed disclosures missing their clear-text counterpart?
         for (CBORObject key : entries.keySet()) {
             if (!entries.get(key)) {
-                throw new RuntimeException("missing unsigned disclosure for: " + key.toString());
+                throw new RuntimeException("Missing unsigned disclosure for: " + key);
             }
         }
         // We did it!
 
-        temp = decodeAndPrintFile("holder-key").getMap();
-       // temp.remove()
+        // Not used at the moment
+        decodeAndPrintFile("holder-key").getMap();
 
         writeString("doc" + File.separator + "index.html", template.toString());
     }
