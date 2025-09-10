@@ -8,7 +8,7 @@
 <link rel='stylesheet' type='text/css' href='style.css'>
 </head>
 <body>
-<a href='https://github.com/cyberphone/sd-experimental/tree/main' title="Back to Repository"><img style='height:2.5em' src='thelab.svg'></a>
+<a href='https://github.com/cyberphone/sd-experimental/tree/main' title="Back to Repository"><img style='height:2.5em' alt='Lab' src='thelab.svg'></a>
 <h2>Selective Disclosure - Experiments</h2>
 This is a set of "printouts" from a PoC using SD-CWT
 as foundation but rather building on
@@ -37,13 +37,21 @@ the enhanced SD-CWT object:
 @issued-sd-cwt@
 The elimination of <code>bstr</code> for holding application data
 makes documents maintain an appearance that is close to the publishing format.
-<p id='sd-cwt-debug-printout'>
+<p id='ietf-sd-cwt-debug-printout'>
 The following is a <code>toString()</code> printout of the <i>original</i> (IETF) SD-CWT:
 </p>
-@original-pretty-print@
+@original-sd-cwt-pretty-print@
 This object is obviously rather hard to "decipher" (and debug) compared to
 its <a href='#original-ietf-sd-cwt'>Authored Counterpart</a>,
 although they are (with respect to CBOR), <i>identical</i>.
+<h5 id='sd-kbt'>Enhanced "SD-KBT" Using An Embedded Signature</h5>
+Holder Response With 3 Disclosures.
+@sd-kbt-pretty-print@
+Note that embedded signatures preserve the underlying data in <i>clear</i>.
+<p id='ietf-sd-kbt-debug-printout'>
+The following is a <code>toString()</code> printout of the <i>original</i> (IETF) SD-KBT:
+</p>
+@original-ietf-sd-kbt@
 <h5 id='issuer-key'>Issuer Key</h5>
 Issuer COSE Key in Extended Diagnostic Notation (EDN).
 @issuer-key@
@@ -55,7 +63,7 @@ Holder COSE Key in Extended Diagnostic Notation (EDN).
 Slightly edited with respect to comma separators &#x1f609;
 <h5>Author and Version</h5>
 Author: Anders Rundgren<br>
-Current version: 2025-09-04.2
+Current version: 2025-09-10.1
 </body>
 </html>
 

@@ -1,0 +1,51 @@
+1010(["https://example.com/sd-kbt", {
+  3: "https://verifier.example/app",
+  6: 1725244237,
+  13: 1010(["https://example.com/sd-cde", {
+    1: "https://issuer.example",
+    2: "https://device.example",
+    4: 1725330600,
+    5: 1725243900,
+    6: 1725244200,
+    8: {
+      1: {
+        1: 2,
+        -1: 1,
+        -2: h'8554eb275dcd6fbd1c7ac641aa2c90d92022fd0d3024b5af18c7cc61ad527a2d',
+        -3: h'4dc7ae2c677e96d0cc82597655ce92d5503f54293d87875d1e79ce4770194343'
+      },
+      2: -16
+    },
+    500: true,
+    502: [
+      60(h'3e2fcbd972ed38c068af06771916cd89871d96c327e5c2eee99476e313b6d632'),
+      60(h'c3cb1cc05eeb7b2abd5f4c2febdedab35d5dee5e358c4c5956ebe808fdb58370'),
+      1674004740
+    ],
+    503: {
+      "country": "us",
+      simple(59): [
+        h'3e66c2ae99733a76d0e55884fc92bb11b4abbcf8f84bbf9006bd09db570b0e32',
+        h'e6f908ed313a889f3981e3d3fe84991e3d80f5f081b9f5b6e4666a0ac74cf8f5'
+      ]
+    },
+    simple(59): [
+      h'd9df03da474fcb3c65771748e2e0608cf437504ecc24f450aaeacd40dd552b3f'
+    ],
+    simple(99): {
+      1: -51,
+      3: "https://issuer.example/cwk3.cbor",
+      6: h'89bfaf9c460cd8f1fbfafd7a9d4d6dbe8400b27f4b2b1b3614b6ef938263f0a1efb8bd6a3cec2619092f8b8c16149060398a2cae9a281e93d99bf01a5fbb09e35966e7c6357041f24cb0d7d301b4bbe4a09b131d61bcfb9cf59a263c94015896'
+    },
+    simple(100): [
+      [h'bae611067bb823486797da1ebbb52f83', "ABCD-123456", 501],
+      [h'8de86a012b3043ae6e4457b9e1aaab80', 1549560720],
+      [h'ec615c3035d5a4ff2f5ae29ded683c8e', "ca", "region"]
+    ]
+  }]),
+  39: h'8c0f5f523b95bea44a9a48c649240803',
+  simple(99): {
+    1: -9,
+    6: h'e5412a854f501d3f14ec4b20f91b5de187a08688a947ee49d5505f3c6238b08f6b02120cdb9cd7b16cf99b27e7f5873255d15640412be031d115cc6756598789'
+  }
+}])

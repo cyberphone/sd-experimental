@@ -1,4 +1,4 @@
-<project name="FIDO Web Pay (FWP) Demo" default="help">
+<project name="SD-CWT Experiments" default="help">
 
   <!-- set properties for this build -->
   <property file="fwp.properties"/>
@@ -39,7 +39,7 @@
   </condition>
 
   <target name="help">
-      <echo message="build tomcat testfido cryptosvg cryptodoc vectors crypto-alternative ctap2test -Ddata2sign=b64u -Dsignature=b64u -Dauthenticatordata=b64u"/>
+      <echo message="create"/>
   </target>
 
   <target name="_compile">
@@ -62,9 +62,6 @@
              </fileset>
         </classpath>
     </javac>
-  </target>
-    
-  <target name="build" depends="_compile">
   </target>
 
   <target name="create" depends="_compile">

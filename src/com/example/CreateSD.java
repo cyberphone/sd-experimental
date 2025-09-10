@@ -14,10 +14,13 @@ import org.webpki.crypto.HashAlgorithms;
 
 import org.webpki.util.IO;
 import org.webpki.util.UTF8;
+import org.webpki.util.HexaDecimal;
 
 public class CreateSD {
 
-    static final String OBJECT_ID = "https://example.com/sd-cbor";
+    static final String OBJECT_ID_SD_CDE = "https://example.com/sd-cde";
+
+    static final String OBJECT_ID_SD_KBT = "https://example.com/sd-kbt";
 
     static StringBuilder template = new StringBuilder();
 
@@ -135,7 +138,7 @@ public class CreateSD {
  
         CBORArray disclosures = decodeAndPrintFile("disclosures").getArray();
     
-        replace("original-pretty-print", createBox(sdCwtOriginal.toString()));
+        replace("original-sd-cwt-pretty-print", createBox(sdCwtOriginal.toString()));
 
         // The following seems a bit constructed but it faithfully
         // follows the original :)
@@ -165,7 +168,7 @@ public class CreateSD {
                 issuerKeyPair.getPrivate(), 
                 AsymSignatureAlgorithms.getAlgorithmFromId(alg))
             .setKeyId(keyId)
-            .sign(new CBORTag(OBJECT_ID, result)), "current-issuer-signature.dn");
+            .sign(new CBORTag(OBJECT_ID_SD_CDE, result)), "current-issuer-signature.dn");
 
         // Raw, but rather pretty anyway
         replace("issued-sd-cwt", createBox(CBORDecoder.decode(cbor).toString()));
@@ -200,7 +203,7 @@ public class CreateSD {
                 @Override
                 public void foundData(CBORObject object) {
                     String objectId = object.getTag().getCOTXObject().objectId;
-                    if (!objectId.equals(OBJECT_ID)) {
+                    if (!objectId.equals(OBJECT_ID_SD_CDE)) {
                         throw new RuntimeException("Unexpected objectID: " + objectId);
                     }
                 }
@@ -258,8 +261,26 @@ public class CreateSD {
         }
         // We did it!
 
-        // Not used at the moment
-        decodeAndPrintFile("holder-key").getMap();
+        // Now use it!
+        CBORMap holderKey = decodeAndPrintFile("holder-key").getMap();
+        // Remove alg from the key.
+        holderKey.remove(new CBORInt(3));
+        KeyPair holderKeyPair = CBORKeyPair.convert(holderKey);
+
+        // Now remove the disclosures we won't disclose
+        CBORArray disclosed = decoded.getTag().getCOTXObject().object.getMap()
+            .get(CBORCryptoConstants.CSF_UNPROTECTED_LBL).getArray();
+            disclosed.remove(2);
+            disclosed.remove(3);
+        CBORMap kbtMap = new CBORMap()
+            .set(new CBORInt(13), decoded)
+            .set(new CBORInt(3), new CBORString("https://verifier.example/app"))
+            .set(new CBORInt(6), new CBORInt(1725244237))
+            .set(new CBORInt(39), new CBORBytes(HexaDecimal.decode("8c0f5f523b95bea44a9a48c649240803")));
+        cbor = syncEmbeddedSignature(new CBORAsymKeySigner(holderKeyPair.getPrivate()).sign(
+            new CBORTag(OBJECT_ID_SD_KBT, kbtMap)), "current-holder-signature.dn");
+        replace("sd-kbt-pretty-print", createBox(CBORDecoder.decode(cbor).toString()));
+        decodeAndPrintFile("original-ietf-sd-kbt");
 
         writeString("doc" + File.separator + "index.html", template.toString());
     }

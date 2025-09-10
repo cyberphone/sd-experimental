@@ -8,7 +8,7 @@
 <link rel='stylesheet' type='text/css' href='style.css'>
 </head>
 <body>
-<a href='https://github.com/cyberphone/sd-experimental/tree/main' title="Back to Repository"><img style='height:2.5em' src='thelab.svg'></a>
+<a href='https://github.com/cyberphone/sd-experimental/tree/main' title="Back to Repository"><img style='height:2.5em' alt='Lab' src='thelab.svg'></a>
 <h2>Selective Disclosure - Experiments</h2>
 This is a set of "printouts" from a PoC using SD-CWT
 as foundation but rather building on
@@ -55,7 +55,7 @@ Unlike the CWT solution, this way of typing CBOR objects is <i>universal</i>.
 The following is a verifiable and authentic <code>toString()</code> printout of
 the enhanced SD-CWT object:
 </p> 
-<div class='webpkihexbox' style='display:block'>1010(["https://example.com/sd-cbor",&nbsp;{<br>
+<div class='webpkihexbox' style='display:block'>1010(["https://example.com/sd-cde",&nbsp;{<br>
 &nbsp;&nbsp;1:&nbsp;"https://issuer.example",<br>
 &nbsp;&nbsp;2:&nbsp;"https://device.example",<br>
 &nbsp;&nbsp;4:&nbsp;1725330600,<br>
@@ -89,7 +89,7 @@ the enhanced SD-CWT object:
 &nbsp;&nbsp;simple(99):&nbsp;{<br>
 &nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;-51,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;3:&nbsp;"https://issuer.example/cwk3.cbor",<br>
-&nbsp;&nbsp;&nbsp;&nbsp;6:&nbsp;h'f0ef26818616bba0d7a5a8a2c34551caf03aab21fdd2123b7541674ce91e668c3d62e22a9e53fac0a258b00659c4f4c970cb2f9ff06ea43eeb72c0f4c517e685142b1aff3b06ff8e91da64bb3a4a81013f0eb70a7d636b2baa844de6c5972460'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;6:&nbsp;h'89bfaf9c460cd8f1fbfafd7a9d4d6dbe8400b27f4b2b1b3614b6ef938263f0a1efb8bd6a3cec2619092f8b8c16149060398a2cae9a281e93d99bf01a5fbb09e35966e7c6357041f24cb0d7d301b4bbe4a09b131d61bcfb9cf59a263c94015896'<br>
 &nbsp;&nbsp;},<br>
 &nbsp;&nbsp;simple(100):&nbsp;[<br>
 &nbsp;&nbsp;&nbsp;&nbsp;[h'bae611067bb823486797da1ebbb52f83',&nbsp;"ABCD-123456",&nbsp;501],<br>
@@ -101,7 +101,7 @@ the enhanced SD-CWT object:
 }])</div>
 The elimination of <code>bstr</code> for holding application data
 makes documents maintain an appearance that is close to the publishing format.
-<p id='sd-cwt-debug-printout'>
+<p id='ietf-sd-cwt-debug-printout'>
 The following is a <code>toString()</code> printout of the <i>original</i> (IETF) SD-CWT:
 </p>
 <div class='webpkihexbox' style='display:block'>18([<br>
@@ -121,6 +121,69 @@ The following is a <code>toString()</code> printout of the <i>original</i> (IETF
 This object is obviously rather hard to "decipher" (and debug) compared to
 its <a href='#original-ietf-sd-cwt'>Authored Counterpart</a>,
 although they are (with respect to CBOR), <i>identical</i>.
+<h5 id='sd-kbt'>Enhanced "SD-KBT" Using An Embedded Signature</h5>
+Holder Response With 3 Disclosures.
+<div class='webpkihexbox' style='display:block'>1010(["https://example.com/sd-kbt",&nbsp;{<br>
+&nbsp;&nbsp;3:&nbsp;"https://verifier.example/app",<br>
+&nbsp;&nbsp;6:&nbsp;1725244237,<br>
+&nbsp;&nbsp;13:&nbsp;1010(["https://example.com/sd-cde",&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;"https://issuer.example",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;2:&nbsp;"https://device.example",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;4:&nbsp;1725330600,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;5:&nbsp;1725243900,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;6:&nbsp;1725244200,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;8:&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;2,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-1:&nbsp;1,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-2:&nbsp;h'8554eb275dcd6fbd1c7ac641aa2c90d92022fd0d3024b5af18c7cc61ad527a2d',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-3:&nbsp;h'4dc7ae2c677e96d0cc82597655ce92d5503f54293d87875d1e79ce4770194343'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2:&nbsp;-16<br>
+&nbsp;&nbsp;&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;&nbsp;&nbsp;500:&nbsp;true,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;502:&nbsp;[<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;60(h'3e2fcbd972ed38c068af06771916cd89871d96c327e5c2eee99476e313b6d632'),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;60(h'c3cb1cc05eeb7b2abd5f4c2febdedab35d5dee5e358c4c5956ebe808fdb58370'),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1674004740<br>
+&nbsp;&nbsp;&nbsp;&nbsp;],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;503:&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"country":&nbsp;"us",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;simple(59):&nbsp;[<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;h'3e66c2ae99733a76d0e55884fc92bb11b4abbcf8f84bbf9006bd09db570b0e32',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;h'e6f908ed313a889f3981e3d3fe84991e3d80f5f081b9f5b6e4666a0ac74cf8f5'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;&nbsp;&nbsp;simple(59):&nbsp;[<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;h'd9df03da474fcb3c65771748e2e0608cf437504ecc24f450aaeacd40dd552b3f'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;simple(99):&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;-51,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:&nbsp;"https://issuer.example/cwk3.cbor",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6:&nbsp;h'89bfaf9c460cd8f1fbfafd7a9d4d6dbe8400b27f4b2b1b3614b6ef938263f0a1efb8bd6a3cec2619092f8b8c16149060398a2cae9a281e93d99bf01a5fbb09e35966e7c6357041f24cb0d7d301b4bbe4a09b131d61bcfb9cf59a263c94015896'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;&nbsp;&nbsp;simple(100):&nbsp;[<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[h'bae611067bb823486797da1ebbb52f83',&nbsp;"ABCD-123456",&nbsp;501],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[h'8de86a012b3043ae6e4457b9e1aaab80',&nbsp;1549560720],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[h'ec615c3035d5a4ff2f5ae29ded683c8e',&nbsp;"ca",&nbsp;"region"]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;]<br>
+&nbsp;&nbsp;}]),<br>
+&nbsp;&nbsp;39:&nbsp;h'8c0f5f523b95bea44a9a48c649240803',<br>
+&nbsp;&nbsp;simple(99):&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;-9,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;6:&nbsp;h'e5412a854f501d3f14ec4b20f91b5de187a08688a947ee49d5505f3c6238b08f6b02120cdb9cd7b16cf99b27e7f5873255d15640412be031d115cc6756598789'<br>
+&nbsp;&nbsp;}<br>
+}])</div>
+Note that embedded signatures preserve the underlying data in <i>clear</i>.
+<p id='ietf-sd-kbt-debug-printout'>
+The following is a <code>toString()</code> printout of the <i>original</i> (IETF) SD-KBT:
+</p>
+<div class='webpkihexbox' style='display:block'>18([<br>
+&nbsp;&nbsp;h'a301260dd284583da401382204582068747470733a2f2f6973737565722e6578616d706c652f636f73652d6b65793310726170706c69636174696f6e2f73642d637774122fa1118358218350bae611067bb823486797da1ebbb52f836b414243442d3132333435361901f55782508de86a012b3043ae6e4457b9e1aaab801a5c5c6b90581c8350ec615c3035d5a4ff2f5ae29ded683c8e62636166726567696f6e590161aa017668747470733a2f2f6973737565722e6578616d706c65027668747470733a2f2f6465766963652e6578616d706c65041a66d674a8051a66d521fc061a66d5232808a101a4010220012158208554eb275dcd6fbd1c7ac641aa2c90d92022fd0d3024b5af18c7cc61ad527a2d2258204dc7ae2c677e96d0cc82597655ce92d5503f54293d87875d1e79ce47701943431901f4f51901f683d83c58201b7fc8ecf4b1290712497d226c04b503b4aa126c603c83b75d2679c3c613f3fdd83c582064afccd3ad52da405329ad935de1fb36814ec48fdfd79e3a108ef858e291e1461a63c749041901f7a267636f756e747279627573f83b8258200d4b8c6123f287a1698ff2db15764564a976fb742606e8fd00e2140656ba0df35820c0b7747f960fc2e201c4d47c64fee141b78e3ab768ce941863dc8914e8f5815ff83b815820af375dc3fba1d082448642c00be7b2f7bb05c9d8fb61cfc230ddfdfb4616a69358609c9022e57adb33c853f30b6e8a590f406ca55849d7b8cd2a2519d3aec03e61b9ef0ecd85fe96103f916f58d73cd2f7754c390401945f0683b144d3504e500f94d30433c3445417dc3c920f7a155548e91994601827d0a46ead66ff450485e85f10726170706c69636174696f6e2f6b622b637774',<br>
+&nbsp;&nbsp;{},<br>
+&nbsp;&nbsp;h'a303781c68747470733a2f2f76657269666965722e6578616d706c652f617070061a66d5234d1827508c0f5f523b95bea44a9a48c649240803',<br>
+&nbsp;&nbsp;h'd895729e72a3a7c801d5a20e9daf510327858aecbb39b8b2e4bc11cbbd625ea8c60b78da31fc9762c46b7cd61094d0475ff1f19a7496cde53ab11600a5859d10'<br>
+])</div>
 <h5 id='issuer-key'>Issuer Key</h5>
 Issuer COSE Key in Extended Diagnostic Notation (EDN).
 <div class='webpkihexbox' style='display:block'>{<br>
@@ -230,7 +293,7 @@ Holder COSE Key in Extended Diagnostic Notation (EDN).
 Slightly edited with respect to comma separators &#x1f609;
 <h5>Author and Version</h5>
 Author: Anders Rundgren<br>
-Current version: 2025-09-04.2
+Current version: 2025-09-10.1
 </body>
 </html>
 

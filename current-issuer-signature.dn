@@ -1,4 +1,4 @@
-1010(["https://example.com/sd-cbor", {
+1010(["https://example.com/sd-cde", {
   1: "https://issuer.example",
   2: "https://device.example",
   4: 1725330600,
@@ -32,7 +32,7 @@
   simple(99): {
     1: -51,
     3: "https://issuer.example/cwk3.cbor",
-    6: h'f0ef26818616bba0d7a5a8a2c34551caf03aab21fdd2123b7541674ce91e668c3d62e22a9e53fac0a258b00659c4f4c970cb2f9ff06ea43eeb72c0f4c517e685142b1aff3b06ff8e91da64bb3a4a81013f0eb70a7d636b2baa844de6c5972460'
+    6: h'89bfaf9c460cd8f1fbfafd7a9d4d6dbe8400b27f4b2b1b3614b6ef938263f0a1efb8bd6a3cec2619092f8b8c16149060398a2cae9a281e93d99bf01a5fbb09e35966e7c6357041f24cb0d7d301b4bbe4a09b131d61bcfb9cf59a263c94015896'
   },
   simple(100): [
     [h'bae611067bb823486797da1ebbb52f83', "ABCD-123456", 501],
