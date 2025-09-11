@@ -46,11 +46,15 @@ when you have deterministic encoding.
 &nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;claim&nbsp;/&nbsp;&nbsp;"postal_code"<br>
 &nbsp;&nbsp;]<br>
 ]</div>
-<h5 id='issued-sd-cwt'>Enhanced "SD-CWT" Using An Embedded Signature</h5>
+<h5 id='issued-sd-cwt'>Enhanced "SD-CWT" Using an Embedded Signature</h5>
 Note: there is no "<code>typ</code>" entry.  This is because
 embedded signatures span over the <i>entire</i> container, and therefore
 make a top-level CBOR embedding tag a more logical place for object IDs.
 Unlike the CWT solution, this way of typing CBOR objects is <i>universal</i>.
+<p>
+A side-effect of this arrangement is that top-level object IDs eliminate
+the need for application-specific media types; <code>application/cbor</code> suffice.
+</p>
 <p>
 The following is a verifiable and authentic <code>toString()</code> printout of
 the enhanced SD-CWT object:
@@ -121,7 +125,7 @@ The following is a <code>toString()</code> printout of the <i>original</i> (IETF
 This object is obviously rather hard to "decipher" (and debug) compared to
 its <a href='#original-ietf-sd-cwt'>Authored Counterpart</a>,
 although they are (with respect to CBOR), <i>identical</i>.
-<h5 id='holder-sd-cwt'>Enhanced "SD-KBT" Using An Embedded Signature</h5>
+<h5 id='holder-sd-cwt'>Enhanced "SD-KBT" Using an Embedded Signature</h5>
 The following is a verifiable and authentic <code>toString()</code> printout of
 an enhanced SD-KBT object holding 3 disclosures:
 <div class='webpkihexbox' style='display:block'>1010(["https://example.com/sd-kbt",&nbsp;{<br>
@@ -294,7 +298,7 @@ Holder COSE Key in Extended Diagnostic Notation (EDN).
 Slightly edited with respect to comma separators &#x1f609;
 <h5>Author and Version</h5>
 Author: Anders Rundgren<br>
-Current version: 2025-09-10.1
+Current version: 2025-09-11.1
 </body>
 </html>
 
